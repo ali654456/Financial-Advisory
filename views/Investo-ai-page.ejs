@@ -1,0 +1,258 @@
+<%- include('partials/header.ejs') %>
+<title> Investo-AI - Investopia </title>
+<link rel="stylesheet" href="/css/Investo-ai-page.css">  
+
+<body class="with-welcome-text">
+  <div class="container-scroller">
+    <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex align-items-top flex-row">
+      <%- include('partials/logo.ejs') %>
+      <div class="navbar-menu-wrapper d-flex align-items-top">
+        <ul class="navbar-nav">
+          <li class="nav-item fw-semibold d-none d-lg-block ms-0">
+            <h1 class="welcome-text">
+              <span class="text-black fw-bold">Investo-AI</span>
+            </h1>
+            <h3 class="welcome-sub-text">Ask our AI for investment advice. Powered by ChatGPT 4o</h3>
+          </li>
+        </ul>
+        <%- include('partials/signout.ejs') %>
+      </div>
+    </nav>
+    <div class="container-fluid page-body-wrapper">
+      <%- include('partials/sidebar.ejs') %>
+      <div class="main-panel">
+        <div class="content-wrapper">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="home-tab">
+                <div class="d-sm-flex align-items-center justify-content-between border-bottom">
+                  <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                      <a
+                        class="nav-link"
+                        id="home-tab"
+                        href="/deposit-page"
+                        role="tab"
+                        aria-controls="overview"
+                        aria-selected="true"
+                        >Deposit Money</a
+                      >
+                    </li>
+                    <li class="nav-item">
+                      <a
+                        class="nav-link"
+                        id="profile-tab"
+                        href="/withdraw-page"
+                        role="tab"
+                        aria-selected="false"
+                        >Withdraw Money</a
+                      >
+                    </li>
+                    <li class="nav-item">
+                      <a
+                        class="nav-link"
+                        id="contact-tab"
+                        href="/link-account-page"
+                        role="tab"
+                        aria-selected="false"
+                        >Link Bank Account</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+                <div class="tab-content tab-content-basic">
+                  <div
+                    class="tab-pane fade show active"
+                    id="overview"
+                    role="tabpanel"
+                    aria-labelledby="overview"
+                  >
+                    <div class="main-content">
+                      <!-- Main content -->
+                      <main>
+                        <section>
+                          <div id="advisory-section">
+                            <h2 class="legend">Risk Assesment AI</h2>
+                            <form id="risk-assessment-form" class="form-group" onsubmit="return submitRiskAssessment()">
+                              <div class="prompt">
+                                <label for="investment-goal">How much are you willing to gain from your investment?</label>
+                                <input type="number" id="investment-goal" name="investment-goal" step="any" placeholder="SAR" required />
+                              </div>
+
+                              <div class="prompt">
+                                <label for="time-horizon">What is your time horizon for this investment?</label>
+                                <input type="number" id="time-horizon-quantity" name="time-horizon-quantity" required />
+                                <select id="time-horizon-unit">
+                                  <option value="weeks">Weeks</option>
+                                  <option value="months">Months</option>
+                                  <option value="years">Years</option>
+                                </select>
+                              </div>
+
+                              <div class="prompt">
+                              <label for="investment-amount">How much money are you willing to invest?</label>
+                              <input type="number" id="investment-amount" name="investment-amount" step="any" placeholder="SAR" required />
+                              </div>
+                              
+                              <div class="button-group">
+                                <button type="submit" class="button" id="submit-info-button">Submit</button>
+                                <button type="reset" class="button" id="reset-button">Reset</button>
+                              </div>
+                            </form>
+                          </div>
+                        </section>
+                        <section id="prompt-section" style="display: none;">
+                          <div id="ask-ai-div">
+                            <input type="text" name="ask" id="ask-ai-prompt" placeholder="Ask your question..." />
+                            <button id="ask-ai-button" class="button" onclick="askAI()">Ask AI</button>
+                            <button id="copy-button" class="button" onclick="copyLastAIResponse()">Copy Last AI Response</button>
+                          </div>
+                        </section>
+                        <section id="conversation-area">
+                          <h4 class="response-placeholder">AI response will present here</h2>
+                          <div id="ai-responses"></div>
+                        </section>
+                      </main>                      
+                      <!-- Main content -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <%- include('partials/footer.ejs') %>
+      </div>
+    </div>
+  </div>
+  <%- include('partials/script.ejs') %>
+  <script>
+    // Clear session storage at the beginning of each conversation
+    sessionStorage.clear();
+
+    // Function to submit risk assessment form
+    function submitRiskAssessment() {
+      // Validate form inputs
+      var goal = document.getElementById("investment-goal").value;
+      var horizonQuantity = document.getElementById("time-horizon-quantity").value;
+      var amount = document.getElementById("investment-amount").value;
+
+      if (isNaN(parseInt(goal)) || isNaN(parseInt(horizonQuantity)) || isNaN(parseInt(amount))) {
+        alert("Please fill in all fields with numeric values.");
+        return false;
+      }
+
+      // Move to prompt section
+      moveToPrompt();
+
+      // Send request to AI
+      askAI();
+
+      return false; // Prevent form submission
+    }
+
+    // Function to move to prompt section
+    function moveToPrompt() {
+      var promptSection = document.getElementById("prompt-section");
+
+      // Hide the risk assessment section and show the prompt section with smooth transition
+      $("#advisory-section").slideUp("slow", function() {
+        promptSection.style.display = "block";
+        $("#prompt-section").slideDown("slow");
+      });
+
+      // Show the "Ask AI" button and input field
+      showAskAI();
+    }
+
+    // Function to show the input field and Ask AI button
+    function showAskAI() {
+      var askAIDiv = document.getElementById("ask-ai-div");
+      askAIDiv.style.display = "block";
+    }
+
+    // Function to send request to AI and display response
+    function askAI() {
+      var goal = document.getElementById("investment-goal").value;
+      var horizonQuantity = document.getElementById("time-horizon-quantity").value;
+      var horizonUnit = document.getElementById("time-horizon-unit").value;
+      var amount = document.getElementById("investment-amount").value;
+      var question = document.getElementById("ask-ai-prompt").value;
+
+      // Constructing full sentence
+      var fullSentence = "I want to gain " + goal + " SAR by investing " + amount + " SAR within " + horizonQuantity + " " + horizonUnit;
+
+      // Retrieve conversation history from session storage
+      var conversationHistory = JSON.parse(sessionStorage.getItem("conversationHistory")) || [];
+
+      // Add user's question to conversation history
+      conversationHistory.push({ role: "user", message: question || fullSentence });
+
+      // Make AJAX request to server to get AI response
+      $.ajax({
+        type: "POST",
+        url: "/ask-ai",
+        data: { ask: question || fullSentence }, // Ask AI either from prompt or risk assessment form
+        success: function(response) {
+          console.log("Response:", response); // Debugging: Log AI response
+          // Add AI's response to conversation history
+          conversationHistory.push({ role: "ai", message: response.message });
+          // Save conversation history to session storage
+          sessionStorage.setItem("conversationHistory", JSON.stringify(conversationHistory));
+
+          // Display conversation history
+          displayConversationHistory();
+
+          document.getElementById("ask-ai-prompt").value = ""; // Clear input field
+        },
+        error: function(xhr, status, error) {
+          console.error("Error:", error);
+          var errorMessage = "Sorry, something went wrong.";
+          if (xhr.status === 401) {
+            errorMessage = "Authentication error: Please check your API key.";
+          } else if (xhr.status === 429) {
+            errorMessage = "Quota exceeded: Please try again later.";
+          }
+          var aiResponses = document.getElementById("ai-responses");
+          aiResponses.innerHTML += "<p class='error-message'>" + errorMessage + "</p>";
+        }
+      });
+    }
+
+    // Function to copy the last AI response
+    function copyLastAIResponse() {
+      var conversationHistory = JSON.parse(sessionStorage.getItem("conversationHistory")) || [];
+
+      // Find the last AI response
+      var lastAIResponse = conversationHistory.filter(item => item.role === "ai").pop();
+
+      // If there is an AI response, copy it to the clipboard
+      if (lastAIResponse) {
+        navigator.clipboard.writeText(lastAIResponse.message)
+          .then(() => {
+            console.log('Last AI response copied to clipboard:', lastAIResponse.message);
+            alert('Last AI response copied to clipboard!');
+          })
+          .catch(err => {
+            console.error('Failed to copy:', err);
+            alert('Failed to copy the last AI response.');
+          });
+      } else {
+        alert('No AI response available to copy.');
+      }
+    }
+
+    // Function to display conversation history
+    function displayConversationHistory() {
+      var aiResponses = document.getElementById("ai-responses");
+      aiResponses.innerHTML = "";
+
+      var conversationHistory = JSON.parse(sessionStorage.getItem("conversationHistory")) || [];
+
+      conversationHistory.forEach(function(item) {
+        aiResponses.innerHTML += "<p class='" + item.role + "-message'>" + item.role.charAt(0).toUpperCase() + item.role.slice(1) + ": " + item.message + "</p>";
+      });
+     }
+  </script>
+</body>
+</html>

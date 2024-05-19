@@ -1,0 +1,159 @@
+<%- include('partials/header.ejs') %>
+<title>Deposit - Investopia </title>
+<link rel="stylesheet" href="/css/deposit-page.css">
+
+<body class="with-welcome-text">
+  <div class="container-scroller">
+    <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex align-items-top flex-row">
+      <%- include('partials/logo.ejs') %>
+      <div class="navbar-menu-wrapper d-flex align-items-top">
+        <ul class="navbar-nav">
+          <li class="nav-item fw-semibold d-none d-lg-block ms-0">
+            <h1 class="welcome-text">
+              <span class="text-black fw-bold">Deposit Page</span>
+            </h1>
+            <h3 class="welcome-sub-text">Deposit Money, from your card to your wallet</h3>
+          </li>
+        </ul>
+        <%- include('partials/signout.ejs') %>
+      </div>
+    </nav>
+    <div class="container-fluid page-body-wrapper">
+      <%- include('partials/sidebar.ejs') %>
+      <div class="main-panel">
+        <div class="content-wrapper">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="home-tab">
+                <div class="d-sm-flex align-items-center justify-content-between border-bottom">
+                  <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                      <a
+                        class="nav-link active ps"
+                        id="home-tab"
+                        href="/deposit-page"
+                        role="tab"
+                        aria-controls="overview"
+                        aria-selected="true"
+                        >Deposit Money</a
+                      >
+                    </li>
+                    <li class="nav-item">
+                      <a
+                        class="nav-link"
+                        id="profile-tab"
+                        href="/withdraw-page"
+                        role="tab"
+                        aria-selected="false"
+                        >Withdraw Money</a
+                      >
+                    </li>
+                    <li class="nav-item">
+                      <a
+                        class="nav-link"
+                        id="contact-tab"
+                        href="/link-account-page"
+                        role="tab"
+                        aria-selected="false"
+                        >Link Bank Account</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+                <div class="tab-content tab-content-basic">
+                  <div
+                    class="tab-pane fade show active"
+                    id="overview"
+                    role="tabpanel"
+                    aria-labelledby="overview"
+                  >
+                    <div class="main-content">
+                      <main class="payment-card mt-50 mb-50">
+                        <form method="post" action="/deposit_money" class="payment-form">
+                          <div class="card-logos">
+                            <img src="/img/mastercard-logo.png" alt="Mastercard Logo" class="card-logo" />
+                            <img src="/img/visa-logo.png" alt="Visa Logo" class="card-logo" />
+                          </div>
+                          <fieldset class="payment-details">
+                            <div class="form-group">
+                              <label for="cardholder-name">Cardholder Name</label>
+                              <input
+                                id="cardholder-name"
+                                type="text"
+                                name="name"
+                                pattern="[A-Za-z\s.-]+"
+                                title="Cardholder name should contain letters only."
+                                placeholder="e.g: Abdullah Ahmad"
+                                required
+                              />
+                            </div>
+                            <div class="form-group">
+                              <label for="card-number">Card Number</label>
+                              <input
+                                id="card-number"
+                                type="text"
+                                name="number"
+                                pattern="\d{13,19}"
+                                title="Card number must be between 13 and 19 digits."
+                                placeholder="e.g: 1234 5678 9012 3456"
+                                required
+                              />
+                            </div>
+                            <div class="form-group half-width">
+                              <label for="exp-date">Exp. Date</label>
+                              <input
+                                id="exp-date"
+                                type="month"
+                                name="date"
+                                required
+                                title="Expiration Date."
+                              />
+                            </div>
+                            <div class="form-group half-width">
+                              <label for="cvv">CVV</label>
+                              <input
+                                id="cvv"
+                                type="text"
+                                name="cvv"
+                                pattern="\d{3}"
+                                title="CVV must be 3 digits."
+                                placeholder="e.g: 123"
+                                required
+                              />
+                            </div>
+                            <div class="form-group">
+                              <label for="deposit-amount">Amount</label>
+                              <input
+                                id="deposit-amount"
+                                type="number"
+                                min="0.01"
+                                placeholder="e.g: 1000.00 SAR"
+                                required
+                              />
+                            </div>
+                            <div id="message-container">
+                              <% if (message && message.length > 0) { %>
+                                <p class="sucess"><%= message %></p>
+                              <% } else if (error && error.length > 0) { %>
+                                <p class="error"><%= error %></p>
+                              <% } %>
+                            </div>
+                            <button type="button" class="pay-btn" onclick="updateBalance()">Deposit</button>
+                          </fieldset>
+                        </form>                                             
+                      </main>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <%- include('partials/footer.ejs') %>
+      </div>
+    </div>
+  </div>
+  <%- include('partials/script.ejs') %>
+  <script src="/js/deposit-money.js"></script>
+</body>
+</html>

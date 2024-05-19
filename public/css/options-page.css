@@ -1,0 +1,88 @@
+.pricing-table {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.plan {
+  background: white;
+  margin-top: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  text-align: center;
+  width: 300px;
+  height: 400px;
+}
+
+.plan-header {
+  padding: 20px;
+}
+
+.plan-header h2 {
+  font-weight: bold;
+  margin: 0;
+  font-size: 24px;
+}
+
+.plan-header .price {
+  font-size: 36px;
+  margin: 10px 0;
+}
+
+.plan-header .price span {
+  font-size: 16px;
+}
+
+.plan-header .description {
+  margin-top: 5px;
+  font-weight: bold;
+  color: #2e2e2e;
+}
+
+.plan-header .details {
+  color: #2a2929;
+  font-size: 14px;
+}
+
+.high {
+  background-color: #df2c2c;
+}
+
+.medium {
+  background-color: #f2cd14;
+}
+
+.low {
+  background-color: #66e721;
+}
+
+.btn1 {
+  background-color: #0056b3;
+  transition: background-color 0.3s ease;
+  padding: 9px 20px;
+  margin: 20px 0;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  color: white;
+  font-size: 14px;
+}
+
+.btn1:hover {
+  background-color: #152d99;
+}
+
+.features {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+  padding: 0 20px 20px;
+}
+
+.features li {
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup - Investopia</title>
+    <link rel="stylesheet" href="/css/signup-page.css">
+    <link rel="shortcut icon" href="/img/BannerNoTitle.png" />
+</head>
+<body>
+    <div class="signup-container">
+        <form action="/submit-signup" method="POST">
+            <h2>Join Us </h2>
+            <div class="input-group">
+                <input type="text" placeholder="Username" name="username" required>
+            </div>
+            <div class="input-group">
+                <input type="email" placeholder="Email" name="email" required>
+            </div>
+            <div class="input-group">
+                <input type="password" placeholder="Password" name="password" required>
+            </div>    
+            <p class="success-message"><%= message %></p>
+            <p class="error-message"><%= error %></p>
+            <button type="submit">Sign Up</button>
+            <p class="login-link">Already have an account? <a href="/login-page">Login here</a>.</p>
+        </form>
+    </div>
+    <%- include('partials/footer.ejs') %>
+</body>
+</html>

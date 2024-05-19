@@ -1,0 +1,159 @@
+<%- include('partials/header.ejs') %>
+<title>Link Bank Account - Investopia </title>
+<link rel="stylesheet" href="/css/link-account-page.css">  
+
+<body class="with-welcome-text">
+  <div class="container-scroller">
+    <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex align-items-top flex-row">
+      <%- include('partials/logo.ejs') %>
+      <div class="navbar-menu-wrapper d-flex align-items-top">
+        <ul class="navbar-nav">
+          <li class="nav-item fw-semibold d-none d-lg-block ms-0">
+            <h1 class="welcome-text">
+              <span class="text-black fw-bold">Bank Linking Page</span>
+            </h1>
+            <h3 class="welcome-sub-text">Link your bank account to the wallet</h3>
+          </li>
+        </ul>
+        <%- include('partials/signout.ejs') %>
+      </div>
+    </nav>
+    <div class="container-fluid page-body-wrapper">
+      <%- include('partials/sidebar.ejs') %>
+      <div class="main-panel">
+        <div class="content-wrapper">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="home-tab">
+                <div class="d-sm-flex align-items-center justify-content-between border-bottom">
+                  <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                      <a
+                        class="nav-link"
+                        id="home-tab"
+                        href="/deposit-page"
+                        role="tab"
+                        aria-controls="overview"
+                        aria-selected="true"
+                        >Deposit Money</a
+                      >
+                    </li>
+                    <li class="nav-item">
+                      <a
+                        class="nav-link"
+                        id="profile-tab"
+                        href="/withdraw-page"
+                        role="tab"
+                        aria-selected="false"
+                        >Withdraw Money</a
+                      >
+                    </li>
+                    <li class="nav-item">
+                      <a
+                        class="nav-link active ps"
+                        id="contact-tab"
+                        href="/link-account-page"
+                        role="tab"
+                        aria-selected="false"
+                        >Link Bank Account</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+                <div class="tab-content tab-content-basic">
+                  <div
+                    class="tab-pane fade show active"
+                    id="overview"
+                    role="tabpanel"
+                    aria-labelledby="overview"
+                  >
+                    <div class="main-content">
+                      <!-- Main content -->
+                      <main>
+                        <form action="/link_account" method="post" id="bank-form">
+                          <label for="cardHolderName">Card Holder Name (as per ID):</label><br />
+                          <input
+                            type="text"
+                            id="cardHolderName"
+                            name="cardHolderName"
+                            placeholder="e.g: Abdullah Ahmad"
+                            required
+                            pattern="[A-Za-z\s'.-]+"
+                            title="Cardholder name should contain letters only."
+                          /><br /><br />
+                        
+                          <label for="cardNumber">Card Number:</label><br />
+                          <input
+                            type="text"
+                            id="cardNumber"
+                            name="cardNumber"
+                            placeholder="e.g: 1234 5678 9012 3456"
+                            required
+                            pattern="\d{4}\s?\d{4}\s?\d{4}\s?\d{4}"
+                            title="Please enter Account Number"
+                          /><br /><br />
+                        
+                          <label for="cardDate">Expiration Date:</label><br />
+                          <input
+                            type="month"
+                            id="cardDate"
+                            name="cardDate"
+                            placeholder="e.g: 01/2024"
+                            required
+                            title="Insert a valid date."
+                          /><br /><br />
+                        
+                          <label for="cardCvv">Card CVV:</label><br />
+                          <input
+                            type="text"
+                            id="cardCvv"
+                            name="cardCvv"
+                            placeholder="e.g: 123"
+                            required
+                            pattern="\d{3}"
+                            title="Please enter Account Number"
+                          /><br /><br />
+                        
+                          <label for="iban">IBAN:</label><br />
+                          <input
+                            type="text"
+                            id="iban"
+                            name="iban"
+                            placeholder="e.g: SA1234567890123456789012"
+                            pattern="[A-Za-z0-9]{20,34}"
+                            title="Please enter a valid IBAN."
+                          /><br /><br />
+                        
+                          <label for="bankAccount">Bank Name:</label><br />
+                          <select id="bankAccount" name="bankAccount" required>
+                            <option value="">Select Bank</option>
+                            <option value="Al Rajhi Bank">Al Rajhi Bank</option>
+                            <option value="Saudi British Bank (SABB)">Saudi British Bank (SABB)</option>
+                            <option value="National Commercial Bank (NCB)">National Commercial Bank (NCB)</option>
+                          </select>
+                          <br /><br />
+                        
+                          <% if (message && message.length > 0) { %>
+                            <p class="sucess"><%= message %></p>
+                          <% } else if (error && error.length > 0) { %>
+                            <p class="error"><%= error %></p>
+                          <% } %>
+                        
+                          <input type="submit" value="Submit" />
+                        </form>                        
+                      </main>                      
+                      <!-- Main content -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <%- include('partials/footer.ejs') %>
+      </div>
+    </div>
+  </div>
+  <%- include('partials/script.ejs') %>
+</body>
+</html>

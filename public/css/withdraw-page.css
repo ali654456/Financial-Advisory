@@ -1,0 +1,120 @@
+  .payment-card {
+    width: 1000px;
+    margin: 10px auto 20px;
+    margin-top: 100px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .withdraw-container {
+    display: flex;
+    align-items: center;
+  }
+
+  .card-logo-img,
+  .withdraw-details label,
+  .payment-details label,
+  .payment-details a {
+    color: #1F3BB3;
+    font-weight: bold;
+  }
+
+  .withdraw-label {
+    margin-right: -450px;
+    margin-top: 6px;
+    margin-bottom: 10px;
+  }
+
+  .withdraw-container label {
+    color: black;
+    font-weight: 500;
+    font-size: 15px;
+  }
+
+  #confirmation-checkbox{
+    cursor: pointer;
+  }
+
+  .investing-details button,
+  .withdraw-details button,
+  .payment-details button {
+    color: white;
+  }
+   
+  .investing-details input,
+  .payment-details input,
+  .withdraw-details input {
+    color: black;
+    width: calc(100% - 20px);
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+  
+  .withdraw-btn,
+  .pay-btn {
+    width: 98%;
+    padding: 7.5px;
+    border: none;
+    background-color: #0056b3;
+    transition: background-color 0.3s ease;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+
+  .withdraw-btn:hover,
+  .pay-btn:hover {
+    background-color: #152d99;
+  }
+
+  .sucess{
+    color: green;
+    text-align: center;
+    font-weight: bold;
+  }
+
+  .error{
+    color: red;
+    text-align: center;
+    font-weight: bold;
+  }
+  
+  @media (max-width: 1500px) {
+    .payment-card {
+      width: 90%;
+      padding: 1.5rem;
+    }
+  }
+  
+  @media (height: 1366px) {
+    .payment-card {
+      padding: 8vh;
+    }
+  }
+  
+  .payment-details a:hover,
+  .footer-links a:hover {
+    text-decoration: underline;
+  }
+  
+  .payment-details input:focus::-webkit-input-placeholder {
+    color: transparent;
+  }
+  
+  .payment-details input:focus:-moz-placeholder {
+    color: transparent;
+  }
+  
+  .payment-details input:focus::-moz-placeholder {
+    color: transparent;
+  }
+  
+  .payment-details input:focus:-ms-input-placeholder {
+    color: transparent;
+  }

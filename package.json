@@ -1,0 +1,27 @@
+{
+  "name": "financial-planning-and-investment-advisory",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "bootstrap": "^5.3.3",
+    "connect-flash": "^0.1.1",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "mongoose": "^8.3.4",
+    "nodemailer": "^6.9.13",
+    "nodemon": "^3.1.0",
+    "openai": "^4.47.1",
+    "passport": "^0.7.0",
+    "passport-local": "^1.0.0"
+  }
+}

@@ -1,0 +1,106 @@
+section {
+    margin: 10px auto 20px; 
+    margin-top: 30px;
+    background-color: #fff; /* White background for sections */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1); /* Soft shadow effect */
+    transition: background-color 0.3s ease; /* Smooth background color transition */
+    width: 1000px;
+}
+
+.legend {
+    margin-bottom: 40px;
+    font-weight: bold;
+}
+
+.prompt {
+    margin-bottom: 15px;
+}
+
+.response-placeholder {
+    margin-top: 5px;
+    color: grey;
+}
+
+input, select {
+    margin-left: 10px;
+    border: 1px solid;
+    border-radius: 5px;
+}
+
+#time-horizon-quantity {
+    margin-left: 66px;
+}
+
+#investment-amount {
+    margin-left: 84px;
+}   
+
+#prompt-section {
+    text-align: center;
+}
+
+#prompt-section input[type="text"],
+#prompt-section button {
+    padding: 10px 20px;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: 4px;
+    box-sizing: border-box;
+    background-color: #0056b3;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth color transition */
+}
+
+#prompt-section input[type="text"] {
+ border: solid 1px #0056b3;   
+ background-color: #fff;
+}
+
+#ai-responses {
+    margin-top: 10px; /* Add space between messages */
+}
+
+.user-message,
+.ai-message {
+    margin-bottom: 10px; /* Add space between user and AI messages */
+    font-size: 0.9em; /* Smaller font size for messages */
+}
+
+.ai-message {
+    font-weight: bold; /* Make AI messages clearer */
+}
+
+.button-group {
+    text-align: center;
+}
+
+.button-group button {
+    margin-right: 10px;
+    margin-top: 20px;
+}
+
+ /* Your CSS Styles */
+ #conversation-area {
+  max-height: 400px; /* Adjust the height as needed */
+  overflow-y: auto;
+}
+
+.button {
+  padding: 9px 20px;
+  margin-bottom: 10px;
+  border: none;
+  border-radius: 4px;
+  box-sizing: border-box;
+  background-color: #0056b3;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth color transition */
+}
+
+
+button:hover {
+    background-color: #152d99;
+}

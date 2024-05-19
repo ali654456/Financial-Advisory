@@ -1,0 +1,129 @@
+body {
+    background-color: #f4f4f4;
+    font-family: Arial, sans-serif;
+  }
+  
+
+    .dashboard {
+        padding: 35px 0;
+    }
+    
+    .dashboard a {
+        background-color: #007bff;
+        border: 1px solid;
+        color: white;
+        margin: 0 15px;
+        padding: 10px;
+        text-decoration: none;
+    }
+    
+    .dashboard a:hover {
+        background-color: #0056b3;
+    }
+
+    a {
+        color: #0056b3;
+        text-decoration: none;
+    }
+    
+    .error {
+        color: red;
+        font-size: 13px;
+        margin-top: 10px;
+        text-align: center;
+    }
+  
+
+    .login-actions {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+    
+    .login-actions a {
+        color: #0056b3;
+        font-size: 14px;
+        text-decoration: none;
+    }
+    
+    .login-actions a:hover {
+        text-decoration: underline;
+    }
+    
+    .login-container {
+        background-color: white;
+        border-radius: 7px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin: 20px auto;
+        padding: 25px;
+        width: 350px;
+    }
+    
+    .login-form button {
+        background-color: #0056b3;
+        transition: background-color 0.3s ease;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        cursor: pointer;
+        margin-top: 10px;
+        padding: 10px;
+        width: 100%;
+    }
+    
+    .login-form button:hover {
+        background-color: #152d99;
+    }
+    
+    .login-form input[type="password"],
+    .login-form input[type="text"] {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-top: 10px;
+        padding: 10px;
+        width: 93%;
+    }
+    
+
+    .banner-container {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        margin-top: 250px;
+    }
+    
+    .banner-logo {
+        animation: slideIn 1s ease-out forwards;
+        height: auto;
+        padding-left: 1%;
+        transform: translateX(-1000%);
+        width: 75px;
+    }
+    
+    .sliding-banner {
+        animation: slideIn 1s ease-out forwards;
+        color: black;
+        font-size: 24px;
+        transform: translateX(-350%);
+    }
+    
+    @keyframes slideIn {
+        to {
+        transform: translateX(0);
+        }
+    }
+
+    .footer {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        color: #6c757d;
+        text-align: center;
+        padding: 25px 0;
+        border-top: 1px solid #dee2e6;
+        font-family: 'Segoe UI', Arial, sans-serif;
+        font-size: 12px;
+        text-decoration: none;
+      }
+    

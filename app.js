@@ -7,8 +7,8 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const bodyParser = require('body-parser');
 const flash = require('connect-flash');
-const { OpenAI } = require('openai');
-const openai = new OpenAI(process.env.OPENAI_API_KEY);
+// const { OpenAI } = require('openai');
+// const openai = new OpenAI(process.env.OPENAI_API_KEY);
 
 // Import schemas
 const User = require('./models/User');
@@ -216,21 +216,21 @@ app.post('/submit-forget-password', async (req, res) => {
   }
 });
 
-app.post('/ask-ai', async (req, res) => {
-  const { ask } = req.body;
+// app.post('/ask-ai', async (req, res) => {
+//   const { ask } = req.body;
 
-  try {
-    const completion = await openai.chat.completions.create({
-      messages: [{ role: "system", content: "You are a helpful assistant." }, { role: "user", content: ask }],
-      model: "gpt-4",
-    });
+//   try {
+//     const completion = await openai.chat.completions.create({
+//       messages: [{ role: "system", content: "You are a helpful assistant." }, { role: "user", content: ask }],
+//       model: "gpt-4",
+//     });
 
-    res.json({ message: completion.choices[0].message.content });
-  } catch (error) {
-    console.error('Error during AI chat:', error);
-    res.status(500).json({ message: 'Sorry, something went wrong.' });
-  }
-});
+//     res.json({ message: completion.choices[0].message.content });
+//   } catch (error) {
+//     console.error('Error during AI chat:', error);
+//     res.status(500).json({ message: 'Sorry, something went wrong.' });
+//   }
+// });
 
 app.post('/link_account', async (req, res) => {
   const { cardHolderName, cardNumber, cardDate, cardCvv, iban, bankAccount } = req.body;

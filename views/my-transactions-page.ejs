@@ -1,6 +1,6 @@
 <%- include('partials/header.ejs') %>
-<title>My Transactions - Investopia </title>
-
+<title>My Transactions - Investopia</title>
+<link rel="stylesheet" href="/css/my-transactions-page.css">
 
 <body class="with-welcome-text">
   <div class="container-scroller">
@@ -12,7 +12,7 @@
             <h1 class="welcome-text">
               <span class="text-black fw-bold">Transactions Page</span>
             </h1>
-            <h3 class="welcome-sub-text">See a deatailed version of all your transactions</h3>
+            <h3 class="welcome-sub-text">See a detailed version of all your transactions</h3>
           </li>
         </ul>
         <%- include('partials/signout.ejs') %>
@@ -28,60 +28,50 @@
                 <div class="d-sm-flex align-items-center justify-content-between border-bottom">
                   <ul class="nav nav-tabs" role="tablist">
                     <li class="nav-item">
-                      <a
-                        class="nav-link"
-                        id="home-tab"
-                        href="/deposit-page"
-                        role="tab"
-                        aria-controls="overview"
-                        aria-selected="true"
-                        >Deposit Money</a
-                      >
+                      <a class="nav-link" id="home-tab" href="/deposit-page" role="tab" aria-controls="overview" aria-selected="true">Deposit Money</a>
                     </li>
                     <li class="nav-item">
-                      <a
-                        class="nav-link"
-                        id="profile-tab"
-                        href="/withdraw-page"
-                        role="tab"
-                        aria-selected="false"
-                        >Withdraw Money</a
-                      >
+                      <a class="nav-link" id="profile-tab" href="/withdraw-page" role="tab" aria-selected="false">Withdraw Money</a>
                     </li>
                     <li class="nav-item">
-                      <a
-                        class="nav-link"
-                        id="contact-tab"
-                        href="/link-account-page"
-                        role="tab"
-                        aria-selected="false"
-                        >Link Bank Account</a
-                      >
+                      <a class="nav-link" id="contact-tab" href="/link-account-page" role="tab" aria-selected="false">Link Bank Account</a>
                     </li>
                   </ul>
                 </div>
                 <div class="tab-content tab-content-basic">
-                  <div
-                    class="tab-pane fade show active"
-                    id="overview"
-                    role="tabpanel"
-                    aria-labelledby="overview"
-                  >
+                  <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
                     <div class="main-content">
                       <!-- Main content -->
-                      <ul>
-                        <% if(transactions && transactions.length > 0) { %>
-                        <% transactions.forEach( transaction => { %>
-                          <li>
-                            <strong>Bank Account:</strong> <%= transaction.bankAccount %><br>
-                            <strong>Description:</strong> <%= transaction.description %><br>
-                            <strong>Amount:</strong> <%= transaction.amount %><br>
-                            <strong>Date:</strong> <%= new Date(transaction.date).toLocaleDateString() %><br>
-                            <strong>Category:</strong> <%= transaction.category %>
-                          </li>
-                        <% }); %>
-                        <% } %>
-                      </ul>                      
+                      <label for="bankAccount">Select Bank:</label>
+                      <select id="bankAccount" name="bankAccount">
+                        <option value="Al Rajhi Bank">Al Rajhi Bank</option>
+                        <option value="Saudi British Bank (SABB)">Saudi British Bank (SABB)</option>
+                        <option value="National Commercial Bank (NCB)">National Commercial Bank (NCB)</option>
+                      </select>
+                      <button id="filter-button">Filter Transactions</button>
+
+                      <table id="transactions-table" class="transactions-table">
+                        <thead>
+                          <tr>
+                            <th>Bank Account</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+                            <th>Category</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <% if(transactions && transactions.length > 0) { %>
+                          <% transactions.forEach(transaction => { %>
+                          <tr>
+                            <td><%= transaction.bankAccount %></td>
+                            <td><%= transaction.amount %></td>
+                            <td><%= new Date(transaction.date).toLocaleDateString() %></td>
+                            <td><%= transaction.category %></td>
+                          </tr>
+                          <% }); %>
+                          <% } %>
+                        </tbody>
+                      </table>
                       <!-- Main content -->
                     </div>
                   </div>
@@ -95,5 +85,46 @@
     </div>
   </div>
   <%- include('partials/script.ejs') %>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('filter-button').addEventListener('click', async () => {
+        const bankAccount = document.getElementById('bankAccount').value;
+  
+        try {
+          const response = await fetch('/filter-transactions', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ bankAccount })
+          });
+  
+          if (response.ok) {
+            const data = await response.json();
+            console.log('Filtered Transactions:', data.transactions); // Log filtered transactions for debugging
+            const transactionsTableBody = document.querySelector('#transactions-table tbody');
+            transactionsTableBody.innerHTML = '';
+  
+            data.transactions.forEach(transaction => {
+              const tr = document.createElement('tr');
+              tr.innerHTML = `
+                <td>${transaction.bankAccount}</td>
+                <td>${transaction.amount}</td>
+                <td>${new Date(transaction.date).toLocaleDateString()}</td>
+                <td>${transaction.category}</td>
+              `;
+              transactionsTableBody.appendChild(tr);
+            });
+          } else {
+            console.error('Failed to fetch transactions. Status:', response.status);
+            alert('Failed to fetch transactions.');
+          }
+        } catch (error) {
+          console.error('Error fetching transactions:', error);
+          alert('An error occurred while fetching transactions.');
+        }
+      });
+    });
+  </script>  
 </body>
 </html>

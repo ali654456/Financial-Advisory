@@ -1,0 +1,52 @@
+.transactions-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .transactions-table th, .transactions-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  .transactions-table th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #f2f2f2;
+    color: black;
+  }
+  
+  .transactions-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .transactions-table tr:hover {
+    background-color: #ddd;
+  }
+  
+  .transactions-table th, .transactions-table td {
+    text-align: left;
+  }
+  
+  .transactions-table th {
+    background-color: #0056b3;
+    color: white;
+  }
+  
+  #filter-button {
+    margin-top: 10px;
+    margin-left: 10px;
+    padding: 7px 20px;
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 5px;
+  }
+  
+  #filter-button:hover {
+    background-color: #152d99;
+  }
+  

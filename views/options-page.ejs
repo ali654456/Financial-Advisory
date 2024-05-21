@@ -1,6 +1,6 @@
 <%- include('partials/header.ejs') %>
 <title>Investment Options - Investopia </title>
-<link rel="stylesheet" href="/css/options-page.css">  
+<link rel="stylesheet" href="/css/options-page.css">
 
 <body class="with-welcome-text">
   <div class="container-scroller">
@@ -14,7 +14,7 @@
             </h1>
             <h3 class="welcome-sub-text">Choose the option that suits you best</h3>
           </li>
-        </ul> 
+        </ul>
         <%- include('partials/signout.ejs') %>
       </div>
     </nav>
@@ -28,51 +28,25 @@
                 <div class="d-sm-flex align-items-center justify-content-between border-bottom">
                   <ul class="nav nav-tabs" role="tablist">
                     <li class="nav-item">
-                      <a
-                        class="nav-link"
-                        id="home-tab"
-                        href="/deposit-page"
-                        role="tab"
-                        aria-controls="overview"
-                        aria-selected="true"
-                        >Deposit Money</a
-                      >
+                      <a class="nav-link" id="home-tab" href="/deposit-page" role="tab" aria-controls="overview" aria-selected="true">Deposit Money</a>
                     </li>
                     <li class="nav-item">
-                      <a
-                        class="nav-link"
-                        id="profile-tab"
-                        href="/withdraw-page"
-                        role="tab"
-                        aria-selected="false"
-                        >Withdraw Money</a
-                      >
+                      <a class="nav-link" id="profile-tab" href="/withdraw-page" role="tab" aria-selected="false">Withdraw Money</a>
                     </li>
                     <li class="nav-item">
-                      <a
-                        class="nav-link"
-                        id="contact-tab"
-                        href="/link-account-page"
-                        role="tab"
-                        aria-selected="false"
-                        >Link Bank Account</a
-                      >
+                      <a class="nav-link" id="contact-tab" href="/link-account-page" role="tab" aria-selected="false">Link Bank Account</a>
                     </li>
                   </ul>
                 </div>
                 <div class="tab-content tab-content-basic">
-                  <div
-                    class="tab-pane fade show active"
-                    id="overview"
-                    role="tabpanel"
-                    aria-labelledby="overview"
-                  >
+                  <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
                     <div class="main-content">
-                      <!-- Main content -->
                       <div class="pricing-table">
+                        <% const risks = ['high', 'medium', 'low']; %>
+                        <% risks.forEach(risk => { %>
                         <div class="plan">
-                          <div class="plan-header high">
-                            <h2>High Risk</h2>
+                          <div class="plan-header <%= risk %>">
+                            <h2><%= risk.charAt(0).toUpperCase() + risk.slice(1) %> Risk</h2>
                             <p class="description">FOR PLANNED PROJECTS</p>
                             <p class="details">Bring your designs to the next level and export them.</p>
                           </div>
@@ -81,38 +55,15 @@
                             <li>Basic interaction</li>
                             <li>Assets library</li>
                           </ul>
-                          <button class="btn1">GET STARTED</button>
-                        </div>
-                      
-                        <div class="plan">
-                          <div class="plan-header medium">
-                            <h2>Medium Risk</h2>
-                            <p class="description">FOR PLANNED PROJECTS</p>
-                            <p class="details">Bring your designs to the next level and export them.</p>
+                          <button class="btn1" data-risk="<%= risk %>">GET STARTED</button>
+                          <div class="investment-input" style="display: none;">
+                            <input type="number" class="investment-amount" placeholder="Enter amount">
+                            <button class="btn1 invest-btn" data-risk="<%= risk %>">Invest</button>
                           </div>
-                          <ul class="features">
-                            <li>3 new projects / month</li>
-                            <li>Basic interaction</li>
-                            <li>Assets library</li>
-                          </ul>
-                          <button class="btn1">GET STARTED</button>
                         </div>
-                      
-                        <div class="plan">
-                          <div class="plan-header low">
-                            <h2>Low Risk</h2>
-                            <p class="description">FOR PROFESSIONAL USE</p>
-                            <p class="details">Enjoy limitless use with interactive export options.</p>
-                          </div>
-                          <ul class="features">
-                            <li>3 new projects / month</li>
-                            <li>Basic interaction</li>
-                            <li>Assets library</li>
-                          </ul>
-                          <button class="btn1">GET STARTED</button>
-                        </div>
-                      </div>                      
-                      <!-- Main content -->
+                        <% }); %>
+                      </div>
+                      <div id="message-container"></div>
                     </div>
                   </div>
                 </div>
@@ -125,5 +76,6 @@
     </div>
   </div>
   <%- include('partials/script.ejs') %>
+  <script src="/js/investment.js"></script>
 </body>
 </html>

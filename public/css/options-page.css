@@ -13,7 +13,7 @@
   overflow: hidden;
   text-align: center;
   width: 300px;
-  height: 400px;
+  transition: height 0.3s ease;
 }
 
 .plan-header {
@@ -47,20 +47,20 @@
 }
 
 .high {
-  background-color: #df2c2c;
+  background-color: #ee2b2b;
 }
 
 .medium {
-  background-color: #f2cd14;
+  background-color: #f1cf25;
 }
 
 .low {
-  background-color: #66e721;
+  background-color: #70e730;
 }
 
 .btn1 {
   background-color: #0056b3;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, height 0.3s ease;
   padding: 9px 20px;
   margin: 20px 0;
   border: none;
@@ -85,4 +85,18 @@
 .features li {
   padding: 10px 0;
   border-bottom: 1px solid #eee;
+}
+
+.investment-input {
+  text-align: center;
+  margin-top: 10px;
+  display: none;
+}
+
+.investment-input input[type="number"] {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: calc(100% - 20px);
+  max-width: 300px;
 }

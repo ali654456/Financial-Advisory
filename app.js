@@ -1,25 +1,29 @@
 // Import dependencies
 require('dotenv').config();
-const { OpenAI } = require('openai');
 const express = require('express');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const bodyParser = require('body-parser');
+const flash = require('connect-flash');
+const { OpenAI } = require('openai');
+const openai = new OpenAI(process.env.OPENAI_API_KEY);
+
+// Import schemas
 const User = require('./models/User');
 const Card = require('./models/Card');
 const Transaction = require('./models/Transaction');
 const Investment = require('./models/Investment');
-const { sendEmail } = require('./public/js/email-service');
-const flash = require('connect-flash');
 
-// Initialize Express app
+// Import functions
+const { sendEmail } = require('./public/js/email-service');
+const { faker } = require('@faker-js/faker');
+
+
 const app = express();
 
-// Set the view engine to ejs
 app.set('view engine', 'ejs');
-const openai = new OpenAI(process.env.OPENAI_API_KEY);
 
 // Middleware
 app.use(express.static('public'));
@@ -32,7 +36,7 @@ app.use(session({
   secret: 'your-secret-key',
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: false } // Use 'secure: true' if using HTTPS
+  cookie: { secure: false }
 }));
 
 // Flash messages
@@ -72,37 +76,30 @@ passport.deserializeUser(async (id, done) => {
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Routes //
-
-// Redirect login page
+// Routes
 app.get('/', (req, res) => {
   res.redirect('/login-page');
 });
 
-// Render login page
 app.get('/login-page', (req, res) => {
   res.render('login-page', { message: req.flash('error') });
 });
 
-// Render signup page
 app.get('/signup-page', (req, res) => {
   res.render('signup-page', { message: '', error: '' });
 });
 
-// Render forget password page
 app.get('/forget-password-page', (req, res) => {
   res.render('forget-password-page', { message: '', error: '' });
 });
 
-// Render homepage page
 app.get('/home-page', (req, res) => {
   if (!req.isAuthenticated()) {
     return res.redirect('/login-page');
   }
-  res.render('home-page', { message: '', error: '', user: req.user, card: req.user.funds});
+  res.render('home-page', { message: '', error: '', user: req.user, card: req.user.cards });
 });
 
-// Render deposit page
 app.get('/deposit-page', (req, res) => {
   if (!req.isAuthenticated()) {
     return res.redirect('/login-page');
@@ -110,7 +107,6 @@ app.get('/deposit-page', (req, res) => {
   res.render('deposit-page', { message: '', error: '' });
 });
 
-// Render withdraw page
 app.get('/withdraw-page', (req, res) => {
   if (!req.isAuthenticated()) {
     return res.redirect('/login-page');
@@ -118,7 +114,6 @@ app.get('/withdraw-page', (req, res) => {
   res.render('withdraw-page', { message: '', error: '' });
 });
 
-// Render bank account link page
 app.get('/link-account-page', (req, res) => {
   if (!req.isAuthenticated()) {
     return res.redirect('/login-page');
@@ -126,7 +121,6 @@ app.get('/link-account-page', (req, res) => {
   res.render('link-account-page', { message: '', error: '' });
 });
 
-// Render Investo-AI page
 app.get('/Investo-ai-page', (req, res) => {
   if (!req.isAuthenticated()) {
     return res.redirect('/login-page');
@@ -134,16 +128,13 @@ app.get('/Investo-ai-page', (req, res) => {
   res.render('Investo-ai-page', { message: '', error: '' });
 });
 
-// Render investment options page
 app.get('/my-transactions-page', async (req, res) => {
   if (!req.isAuthenticated()) {
     return res.redirect('/login-page');
   }
   try {
-    const transactions = await Transaction.find();
-
-    // Log the fetched transactions for debugging purposes
-    console.log('Fetched transactions:', transactions);
+    const user = await User.findById(req.user._id).populate('transactions');
+    const transactions = user.transactions;
 
     if (!Array.isArray(transactions)) {
       throw new Error('Transactions is not an array');
@@ -152,12 +143,10 @@ app.get('/my-transactions-page', async (req, res) => {
     res.render('my-transactions-page', { message: '', error: '', transactions });
   } catch (error) {
     console.error('Error fetching transactions:', error);
-
     res.render('my-transactions-page', { message: '', error: 'Failed to fetch transactions', transactions: [] });
   }
 });
 
-// Render investment options page
 app.get('/options-page', (req, res) => {
   if (!req.isAuthenticated()) {
     return res.redirect('/login-page');
@@ -165,16 +154,12 @@ app.get('/options-page', (req, res) => {
   res.render('options-page', { message: '', error: '' });
 });
 
-// Handles //
-
-// Handle login
 app.post('/login', passport.authenticate('local', {
   successRedirect: '/home-page',
   failureRedirect: '/login-page',
   failureFlash: true
 }));
 
-// Handle signup
 app.post('/submit-signup', async (req, res) => {
   const { username, email, password } = req.body;
 
@@ -185,7 +170,15 @@ app.post('/submit-signup', async (req, res) => {
       return res.render('signup-page', { message: '', error: 'Username or email already exists' });
     }
 
-    const newUser = new User({ username: username, email: email, password: password, cards: [], transactions: [] });
+    const newUser = new User({ 
+      username: username, 
+      email: email, 
+      password: password,
+      wallet: 0,
+      cards: [],
+      investments: [],
+      transactions: []
+    });
 
     await newUser.save();
 
@@ -196,7 +189,6 @@ app.post('/submit-signup', async (req, res) => {
   }
 });
 
-// Handle forget password
 app.post('/submit-forget-password', async (req, res) => {
   try {
     const { email } = req.body;
@@ -224,7 +216,6 @@ app.post('/submit-forget-password', async (req, res) => {
   }
 });
 
-// Handle AI
 app.post('/ask-ai', async (req, res) => {
   const { ask } = req.body;
 
@@ -241,7 +232,6 @@ app.post('/ask-ai', async (req, res) => {
   }
 });
 
-// Handle account linking
 app.post('/link_account', async (req, res) => {
   const { cardHolderName, cardNumber, cardDate, cardCvv, iban, bankAccount } = req.body;
 
@@ -262,10 +252,14 @@ app.post('/link_account', async (req, res) => {
       date: cardDate,
       cvv: cardCvv,
       iban: iban,
-      bank: bankAccount
+      bank: bankAccount,
+      funds: 10000
     });
 
-    user.card = newCard;
+    user.cards.push(newCard);
+
+    const transactions = generateFakeTransactions(10);
+    user.transactions = user.transactions.concat(transactions);
 
     await user.save();
 
@@ -276,7 +270,6 @@ app.post('/link_account', async (req, res) => {
   }
 });
 
-// Handle money deposit
 app.post('/deposit_money', (req, res, next) => {
   if (req.isAuthenticated()) {
     return next();
@@ -300,29 +293,29 @@ app.post('/deposit_money', (req, res, next) => {
       user.cards = [];
     }
 
-    const cardNumber = Number(number);
-    let card = user.cards.find(card => card.number === cardNumber);
+    const cardNumber = String(number);
+    console.log('User cards:', user.cards);
 
-    let newBalance;
-    if (card) {
-      card.funds = (card.funds || 0) + parseFloat(amount);
-      newBalance = card.funds;
-    } else {
-      const newCard = new Card({
-        name,
-        number: cardNumber,
-        date,
-        cvv: Number(cvv),
-        funds: parseFloat(amount)
-      });
-      user.cards.push(newCard);
-      newBalance = newCard.funds;
+    let card = user.cards.find(card => String(card.number) === cardNumber);
+
+    if (!card) {
+      console.log('Card not found for number:', cardNumber);
+      return res.render('deposit-page', { message: '', error: 'Card not found' });
     }
+
+    if (card.funds < parseFloat(amount)) {
+      return res.render('deposit-page', { message: '', error: 'Insufficient funds on the card' });
+    }
+
+    card.funds -= parseFloat(amount);
+
+    user.wallet = (user.wallet || 0) + parseFloat(amount);
+    const newBalance = user.wallet;
 
     await user.save();
 
     res.render('deposit-page', {
-      message: 'Money has been added to your account. Your new balance is: ' + newBalance + ' SAR',
+      message: 'Money has been added to your wallet. Your new wallet balance is: ' + newBalance + ' SAR',
       error: ''
     });
   } catch (error) {
@@ -331,15 +324,16 @@ app.post('/deposit_money', (req, res, next) => {
   }
 });
 
-// Handle money withdraw
 app.post('/withdraw_money', (req, res, next) => {
   if (req.isAuthenticated()) {
     return next();
   }
   res.redirect('/login-page');
 }, async (req, res) => {
-  const { amount, iban } = req.body;
+  const { iban, amount } = req.body;
   const userId = req.user._id;
+
+  console.log('Request body:', req.body);
 
   try {
     if (!amount || !iban) {
@@ -351,32 +345,29 @@ app.post('/withdraw_money', (req, res, next) => {
       return res.render('withdraw-page', { message: '', error: 'User not found' });
     }
 
-    let totalFunds = user.cards.reduce((total, card) => total + (card.funds || 0), 0);
+    const withdrawAmount = parseFloat(amount);
 
-    if (totalFunds < amount) {
-      return res.render('withdraw-page', { message: '', error: 'Insufficient funds' });
+    if (user.wallet < withdrawAmount) {
+      return res.render('withdraw-page', { message: '', error: 'Insufficient funds in wallet' });
     }
 
-    let remainingAmount = amount;
-    for (let card of user.cards) {
-      if (remainingAmount <= 0) break;
-      if (card.funds > 0) {
-        if (card.funds >= remainingAmount) {
-          card.funds -= remainingAmount;
-          remainingAmount = 0;
-        } else {
-          remainingAmount -= card.funds;
-          card.funds = 0;
-        }
-      }
+    if (!Array.isArray(user.cards)) {
+      user.cards = [];
     }
+
+    const card = user.cards.find(card => String(card.iban) === String(iban));
+
+    if (!card) {
+      return res.render('withdraw-page', { message: '', error: 'Card not found' });
+    }
+
+    user.wallet -= withdrawAmount;
+    card.funds += withdrawAmount;
 
     await user.save();
 
-    let newBalance = user.cards.reduce((total, card) => total + (card.funds || 0), 0);
-
     res.render('withdraw-page', {
-      message: `Withdrawal was successful. Your new balance is: ${newBalance} SAR`,
+      message: `Withdrawal was successful. Your new wallet balance is: ${user.wallet} SAR`,
       error: ''
     });
   } catch (error) {
@@ -385,7 +376,67 @@ app.post('/withdraw_money', (req, res, next) => {
   }
 });
 
-// Handle 404 errors
+app.post('/filter-transactions', async (req, res) => {
+  if (!req.isAuthenticated()) {
+    return res.status(401).json({ message: 'User not authenticated' });
+  }
+
+  const { bankAccount } = req.body;
+  try {
+    const user = await User.findById(req.user._id).populate({
+      path: 'transactions',
+      match: { bankAccount: bankAccount }
+    });
+
+    const transactions = user.transactions;
+
+    if (!Array.isArray(transactions)) {
+      throw new Error('Transactions is not an array');
+    }
+
+    res.json({ transactions });
+  } catch (error) {
+    console.error('Error filtering transactions:', error);
+    res.status(500).json({ message: 'Failed to fetch transactions' });
+  }
+});
+
+app.post('/generate-transactions', async (req, res) => {
+  const userId = req.user._id;
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const transactions = generateFakeTransactions(10);
+
+    user.transactions = user.transactions.concat(transactions);
+
+    await user.save();
+
+    res.json({ message: 'Transactions generated successfully.' });
+  } catch (error) {
+    console.error('Error generating transactions:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+function generateFakeTransactions(count) {
+  const categories = ['food', 'transportation', 'rent', 'amenities', 'mortgage'];
+  const bankAccounts = ['Al Rajhi Bank', 'Saudi British Bank (SABB)', 'National Commercial Bank (NCB)'];
+  const transactions = [];
+  for (let i = 0; i < count; i++) {
+    transactions.push({
+      amount: faker.finance.amount(),
+      date: faker.date.past(),
+      category: faker.helpers.arrayElement(categories),
+      bankAccount: faker.helpers.arrayElement(bankAccounts),
+    });
+  }
+  return transactions;
+}
+
 app.use((req, res) => {
   res.status(404).render('error-page');
 });
@@ -394,12 +445,10 @@ app.use((req, res) => {
 mongoose.connect(process.env.MONGO_URI)
   .then((result) => {
     console.log(`Successfully connected to database server..`);
-    app.listen(process.env.Port, () => {
-      console.log(`Web server listening on port ${process.env.Port}`);
+    app.listen(process.env.PORT, () => {
+      console.log(`Web server listening on port ${process.env.PORT}`);
     });
-    
   })
   .catch((error) => {
     console.log(error);
   });
-

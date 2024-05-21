@@ -28,6 +28,7 @@ body {
     
     .error {
         color: red;
+        font-weight: bold;
         font-size: 13px;
         margin-top: 10px;
         text-align: center;

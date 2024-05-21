@@ -1,6 +1,6 @@
 <%- include('partials/header.ejs') %>
-<title>Withdraw - Investopia </title>
-<link rel="stylesheet" href="/css/withdraw-page.css">  
+<title>Withdraw - Investopia</title>
+<link rel="stylesheet" href="/css/withdraw-page.css">
 
 <body class="with-welcome-text">
   <div class="container-scroller">
@@ -35,8 +35,7 @@
                         role="tab"
                         aria-controls="overview"
                         aria-selected="true"
-                        >Deposit Money</a
-                      >
+                      >Deposit Money</a>
                     </li>
                     <li class="nav-item">
                       <a
@@ -45,8 +44,7 @@
                         href="/withdraw-page"
                         role="tab"
                         aria-selected="false"
-                        >Withdraw Money</a
-                      >
+                      >Withdraw Money</a>
                     </li>
                     <li class="nav-item">
                       <a
@@ -55,8 +53,7 @@
                         href="/link-account-page"
                         role="tab"
                         aria-selected="false"
-                        >Link Bank Account</a
-                      >
+                      >Link Bank Account</a>
                     </li>
                   </ul>
                 </div>
@@ -76,6 +73,7 @@
                               <label for="amount">Amount</label>
                               <input
                                 id="amount"
+                                name="amount"
                                 type="number"
                                 step="0.01"
                                 min="0"
@@ -85,9 +83,10 @@
                               />
                             </div>
                             <div class="form-group">
-                              <label for="card-number">IBAN</label>
+                              <label for="iban">IBAN</label>
                               <input
-                                id="card-number"
+                                id="iban"
+                                name="iban"
                                 type="text"
                                 placeholder="e.g: SA1234567890123456789012"
                                 required
@@ -112,10 +111,10 @@
                                 <p class="error"><%= error %></p>
                               <% } %>
                             </div>
-                            <button type="button" class="withdraw-btn" onclick="withdrawMoney()">Withdraw</button>
+                            <button type="submit" class="withdraw-btn">Withdraw</button> <!-- Changed to submit button -->
                           </fieldset>
-                        </form>                                                
-                      </main>                      
+                        </form>
+                      </main>
                       <!-- Main content -->
                     </div>
                   </div>

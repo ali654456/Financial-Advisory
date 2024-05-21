@@ -1,6 +1,6 @@
 <%- include('partials/header.ejs') %>
-<title>Link Bank Account - Investopia </title>
-<link rel="stylesheet" href="/css/link-account-page.css">  
+<title>Link Bank Account - Investopia</title>
+<link rel="stylesheet" href="/css/link-account-page.css">
 
 <body class="with-welcome-text">
   <div class="container-scroller">
@@ -35,8 +35,7 @@
                         role="tab"
                         aria-controls="overview"
                         aria-selected="true"
-                        >Deposit Money</a
-                      >
+                      >Deposit Money</a>
                     </li>
                     <li class="nav-item">
                       <a
@@ -45,8 +44,7 @@
                         href="/withdraw-page"
                         role="tab"
                         aria-selected="false"
-                        >Withdraw Money</a
-                      >
+                      >Withdraw Money</a>
                     </li>
                     <li class="nav-item">
                       <a
@@ -55,8 +53,7 @@
                         href="/link-account-page"
                         role="tab"
                         aria-selected="false"
-                        >Link Bank Account</a
-                      >
+                      >Link Bank Account</a>
                     </li>
                   </ul>
                 </div>
@@ -139,7 +136,7 @@
                             <p class="error"><%= error %></p>
                           <% } %>
                         
-                          <input type="submit" value="Submit" />
+                          <input type="submit" value="Submit" id="link-account-button" />
                         </form>                        
                       </main>                      
                       <!-- Main content -->
@@ -155,5 +152,9 @@
     </div>
   </div>
   <%- include('partials/script.ejs') %>
+  <script src="/js/generate-transactions.js"></script>
 </body>
-</html>
+</html>'
+
+
+'
